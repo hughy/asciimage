@@ -22,7 +22,6 @@ def test_preprocess():
 
 def test_preprocess_shape():
     test_image = Image.open("images/cat0.jpg")
-    width, height = test_image.size
 
     test_output_size = 16
     preprocessed_test_image = preprocess.preprocess_image(test_image, test_output_size)
@@ -36,6 +35,19 @@ def test_preprocess_shape():
     )
 
 
+def test_preprocess_non_square():
+    test_image = Image.open("images/cat1.jpg")
+    input_width, input_height = test_image.size
+    assert input_width != input_height
+
+    test_output_size = 16
+    preprocessed_test_image = preprocess.preprocess_image(test_image, test_output_size)
+    _, _, output_width, output_height = preprocessed_test_image.shape
+    # Output must be 4D Tensor
+    # Represents images of 32xoutput_size pixels on each side
+    assert output_width == output_height
+
+
 def test_convert():
     test_output_size = 32
     with open(f"fixtures/cat0_str{test_output_size}.txt") as f:
@@ -43,3 +55,10 @@ def test_convert():
 
     test_converson = convert.convert("images/cat0.jpg", test_output_size)
     assert fixture_output == test_converson
+
+
+def test_get_output_string():
+    test_tensor = torch.tensor([1, 2, 3, 4])
+
+    test_output_string = convert.get_output_string(test_tensor, 2)
+    assert test_output_string == "12\n34"

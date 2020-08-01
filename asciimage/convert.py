@@ -61,4 +61,4 @@ def convert(image_path: str, output_size: int) -> None:
 
 
 if __name__ == "__main__":
-    print(convert("images/cat0.jpg", 32))
+    print(convert("images/cat1.jpg", 32))

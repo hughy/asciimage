@@ -9,8 +9,11 @@ from torchvision import transforms
 def preprocess_image(image: Image, output_size: int) -> torch.Tensor:
     """Performs necessary preprocessing steps on the input image.
     """
+    width, height = image.size
+    # CenterCrop to square image
+    square_image = transforms.CenterCrop(min(width, height))(image)
     # Increase contrast
-    contraster = ImageEnhance.Contrast(image)
+    contraster = ImageEnhance.Contrast(square_image)
     contrasted_image = contraster.enhance(1.5)
     # Convert to grayscale
     grayscale_image = contrasted_image.convert(mode="L")

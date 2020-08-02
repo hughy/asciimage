@@ -78,6 +78,8 @@ The text below provides a more representative example of converter output at low
 
 - The example shown above suggests that the character pooling module primarily distinguishes between black (class `B`) and white (class `1`). Alternate classes near the edges of the cat figure and in the area of its face suggest some texture, but output text only contains detail beyond the silhouette of the cat at higher resolutions (i.e., 128x128 and larger).
 
-- Since the converter downsamples each 'block' in the input image to a single character only monospace fonts will display text in such a way that a viewer can recognize the input image.
+- Since the converter downsamples each 'block' in the input image to a single character only monospace fonts will display text in such a way that a viewer can recognize the input image. Furthermore, since even monospace fonts feature characters that are taller than they are wide, the converter generates images that are accordingly 'squished' vertically.
 
 - The character classifier that I used to generate the example only recognizes digits and uppercase and lowercase letters. Additional characters such as a blank space or period might produce more detailed text-images.
+
+- Changes to image preprocessing like increasing sharpness or contrast might yield better ASCII results.

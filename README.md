@@ -13,6 +13,8 @@ The division of an image into equally-sized blocks and 'downsampling' each block
 
 I use a convolutional neural network modeled after [LeNet-5](http://yann.lecun.com/exdb/lenet/) and trained on the [EMNIST](https://www.nist.gov/itl/products-and-services/emnist-dataset) dataset of handwritten characters to predict the character for each 'block' in the input image.
 
+This project includes the model that I mention above, as well as a LeNet-5 implementation trained on the MNIST dataset (which includes only digits), in the `models` directory. I include both models as [TorchScript](https://pytorch.org/docs/stable/jit.html) so that this project does not depend on the code that implements the model architecture.
+
 ### Preprocessing
 
 Each input image undergoes the following steps before conversion to text:

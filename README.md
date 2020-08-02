@@ -74,6 +74,21 @@ The text below provides a more representative example of converter output at low
 
 ## Usage
 
+This project uses `poetry` to manage Python virtual environments and dependencies. The commands below refer to `poetry`, but you can install dependencies from `requirements.txt` and run each command without `poetry run`.
+
+To run unit tests:
+
+    poetry run pytest
+
+To convert an image at `<image_filepath>`:
+
+    poetry run python -m asciimage.convert -i <image_filepath>
+
+To alter the output size from the default size of 32x32 characters, use the `-o` or `--output-size` option:
+
+
+    poetry run python -m asciimage.convert -i <image_filepath> -o 128
+
 ## Limitations
 
 - The example shown above suggests that the character pooling module primarily distinguishes between black (class `B`) and white (class `1`). Alternate classes near the edges of the cat figure and in the area of its face suggest some texture, but output text only contains detail beyond the silhouette of the cat at higher resolutions (i.e., 128x128 and larger).

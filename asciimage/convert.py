@@ -1,4 +1,5 @@
 import argparse
+import string
 
 from PIL import Image
 import torch
@@ -19,6 +20,7 @@ class CharacterPool(nn.Module):
     3. Evaluate trained character recognition model on batch
     4. Identify predicted class for each block
     """
+
     def __init__(self, character_model: nn.Module) -> None:
         super().__init__()
         self.character_model = character_model
@@ -31,12 +33,18 @@ class CharacterPool(nn.Module):
         return torch.argmax(y_hat, dim=1)
 
 
+CHARACTER_CLASSES = string.digits + string.ascii_uppercase + string.ascii_lowercase
+
+
 def get_output_string(character_predictions: torch.Tensor, size: int) -> str:
     """Converts a Tensor of character predictions to a string.
     """
     prediction_matrix = character_predictions.reshape(size, size)
     return "\n".join(
-        ["".join([str(c) for c in row]) for row in prediction_matrix.tolist()]
+        [
+            "".join([CHARACTER_CLASSES[c] for c in row])
+            for row in prediction_matrix.tolist()
+        ]
     )
 
 
@@ -47,7 +55,7 @@ def convert_image(image_path: str, output_size: int) -> str:
     preprocessed = preprocess_image(image, output_size)
 
     # Load TorchScript model
-    character_model = torch.jit.load("models/lenet_5_mnist.pt")
+    character_model = torch.jit.load("models/lenet_5_emnist.pt")
     character_model.eval()
     pooler = CharacterPool(character_model)
 
@@ -56,11 +64,25 @@ def convert_image(image_path: str, output_size: int) -> str:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="""
+    parser = argparse.ArgumentParser(
+        description="""
         Converts images to strings of ASCII characters by applying a deep learning
         character recognition model to image blocks.
-    """)
-    parser.add_argument("-i", "--image-path", type=str, default="images/cat0.jpg", help="Path to the image to convert")
-    parser.add_argument("-o", "--output-size", type=int, default=32, help="The size of the output string. `convert` will generate a string with this number of rows and columns.")
+    """
+    )
+    parser.add_argument(
+        "-i",
+        "--image-path",
+        type=str,
+        default="images/cat0.jpg",
+        help="Path to the image to convert",
+    )
+    parser.add_argument(
+        "-o",
+        "--output-size",
+        type=int,
+        default=32,
+        help="The size of the output string. `convert` will generate a string with this number of rows and columns.",
+    )
     args = parser.parse_args()
     print(convert_image(args.image_path, args.output_size))

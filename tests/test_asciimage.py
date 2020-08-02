@@ -53,7 +53,7 @@ def test_convert():
     with open(f"fixtures/cat0_str{test_output_size}.txt") as f:
         fixture_output = f.read()
 
-    test_converson = convert.convert("images/cat0.jpg", test_output_size)
+    test_converson = convert.convert_image("images/cat0.jpg", test_output_size)
     assert fixture_output == test_converson
 
 

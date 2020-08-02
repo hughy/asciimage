@@ -10,6 +10,7 @@ def preprocess_image(image: Image, output_size: int) -> torch.Tensor:
     """Performs necessary preprocessing steps on the input image.
     """
     width, height = image.size
+    print(image.size)
     # CenterCrop to square image
     square_image = transforms.CenterCrop(min(width, height))(image)
     # Increase contrast

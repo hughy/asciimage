@@ -5,6 +5,8 @@ from PIL import Image
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.data import DataLoader
+from torch.utils.data import TensorDataset
 
 from asciimage.preprocess import preprocess_image
 
@@ -28,9 +30,15 @@ class CharacterPool(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         blocks = F.unfold(x, kernel_size=32, stride=32)
         _, _, n = blocks.shape
-        block_batch = blocks.permute(2, 0, 1).reshape(n, 1, 32, 32)
-        y_hat = self.character_model(block_batch)
-        return torch.argmax(y_hat, dim=1)
+        block_tensor = blocks.permute(2, 0, 1).reshape(n, 1, 32, 32)
+
+        block_batches = DataLoader(TensorDataset(block_tensor), batch_size=32)
+        batch_predictions = []
+        for (block_batch,) in block_batches:
+            batch_y_hat = self.character_model(block_batch)
+            batch_predictions.append(torch.argmax(batch_y_hat, dim=1))
+
+        return torch.cat(batch_predictions)
 
 
 CHARACTER_CLASSES = string.digits + string.ascii_uppercase + string.ascii_lowercase

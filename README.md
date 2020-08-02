@@ -18,10 +18,11 @@ I use a convolutional neural network modeled after [LeNet-5](http://yann.lecun.c
 Each input image undergoes the following steps before conversion to text:
 
 1. Cropping the image to a square
-2. Increasing contrast
-3. Conversion to grayscale
-4. Color inversion
-5. Resizing for desired output size
+2. Increasing sharpness
+3. Increasing contrast
+4. Conversion to grayscale
+5. Color inversion
+6. Resizing for desired output size
 
 The character recognition models that I used necessitate both the conversion to grayscale and color inversion of images in order to match the input format of the training images. Similarly, resizing input images ensures that the input image will consist of 32x32 px 'blocks'.
 
@@ -80,5 +81,3 @@ The text below provides a more representative example of converter output at low
 - Since the converter downsamples each 'block' in the input image to a single character only monospace fonts will display text in such a way that a viewer can recognize the input image.
 
 - The character classifier that I used to generate the example only recognizes digits and uppercase and lowercase letters. Additional characters such as a blank space or period might produce more detailed text-images.
-
-- The converter cannot manage large output image size (i.e., larger than 256x256). Dividing the blocks resulting from `unfold`ing the input image into smaller batches before passing them to the character classifier may resolve this.

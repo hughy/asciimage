@@ -25,6 +25,4 @@ def preprocess_image(image: Image, output_size: int) -> torch.Tensor:
     # Resize to yield NxN blocks of size 32x32
     resized_image = inverted_image.resize((output_size * 32, output_size * 32))
     # Convert to Tensor
-    tensor = transforms.ToTensor()(resized_image).unsqueeze(0)
-    torch.save(tensor, "fixtures/cat0_tensor32.pth")
-    return tensor
+    return transforms.ToTensor()(resized_image).unsqueeze(0)
